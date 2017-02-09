@@ -1,0 +1,208 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{mathpazo}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+
+%-----------------------------------------------------------------------------%
+% Macros:
+%-----------------------------------------------------------------------------%
+
+\newcommand{\op}[1]{\operatorname{#1}}
+\newcommand{\tinyspace}{\mspace{1mu}}
+
+\newcommand{\abs}[1]{\lvert #1 \rvert}
+\newcommand{\bigabs}[1]{\bigl\lvert #1 \bigr\rvert}
+\newcommand{\Bigabs}[1]{\Bigl\lvert #1 \Bigr\rvert}
+\newcommand{\biggabs}[1]{\biggl\lvert #1 \biggr\rvert}
+\newcommand{\Biggabs}[1]{\Biggl\lvert #1 \Biggr\rvert}
+
+\renewcommand{\natural}{\mathbb{N}}
+
+\newenvironment{mylist}[1]{\begin{list}{}{
+	\setlength{\leftmargin}{#1}
+	\setlength{\rightmargin}{0mm}
+	\setlength{\labelsep}{2mm}
+	\setlength{\labelwidth}{8mm}
+	\setlength{\itemsep}{0mm}}}
+	{\end{list}}
+
+\newcounter{questioncounter}
+\newenvironment{question}{
+  \begin{mylist}{\parindent}
+  \item[\stepcounter{questioncounter}
+    \thequestioncounter.]}{
+\end{mylist}}
+
+\newenvironment{solution}{
+  \begin{trivlist}
+  \item {\bf Solution.}}{
+\end{trivlist}}
+
+%=============================================================================%
+               
+\begin{document}
+
+\pagestyle{plain}
+\thispagestyle{fancy}
+\rhead{\footnotesize Spring 2016}
+\lhead{\footnotesize CS 360 Introduction to the Theory of Computing}
+\cfoot{\thepage} 
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\begin{center}
+  \rule{0mm}{9mm}
+  {\Large\bf Assignment 1}\\[2mm]
+  Due: Friday, May 20 at 4:00pm
+\end{center}
+
+%-----------------------------------------------------------------------------%
+
+\noindent
+When answering questions on this assignment (or any other assignment or exam in
+this course), you are free to make use of facts that were stated in the lecture
+or that appear in the lecture notes without having to argue or reprove those
+facts.
+
+%-----------------------------------------------------------------------------%
+
+\begin{question}[6 points]
+  The following problems each have a short answer, perhaps just a few
+  sentences and maybe an equation or two.
+  Try to make your answers clear and to the point, and choose the simplest
+  answer whenever possible.
+
+  \begin{enumerate}
+  \item[(a)]
+    Let $\Sigma$ be an alphabet and let $A\subseteq\Sigma^{\ast}$ be any
+    infinite language.
+    Prove that there must exist a language $B\subseteq A$ that is not regular.
+  \item[(b)]
+    Let $\Sigma$ be an alphabet.
+    Prove that there are countably many finite languages over $\Sigma$.
+  \item[(c)]
+    Let $\Sigma$ be an alphabet, let $M = (Q,\Sigma,\delta,q_0,F)$ be a DFA,
+    and let $p\in Q$ be a state of $M$.
+    Define a language
+    \[
+    A = \bigl\{
+    w\in\Sigma^{\ast}\,:\,
+    \text{when $M$ is run on input $w$ it enters the state $p$ at least once}
+    \bigr\}.
+    \]
+    Give a precise, formal description of a DFA that recognizes the language
+    $A$.
+
+  \end{enumerate}
+\end{question}
+
+%-----------------------------------------------------------------------------%
+
+\begin{question}[6 points]
+  Let us say that a string $x$ is obtained from a string $w$ by
+  \emph{deleting symbols} if it is possible to remove zero or more symbols
+  from $w$ so that just the string $x$ remains.
+  For example, the following strings can all be obtained from 0110 by
+  deleting symbols:
+  \[
+  \varepsilon,\;
+  0,\;
+  1,\;
+  00,\; 
+  01,\;
+  10,\;
+  11,\;
+  010,\; 
+  011,\;
+  110,\; \text{and} \; 
+  0110.
+  \]
+  
+  For the two parts of this question that follow, assume that 
+  $\Sigma = \{0,1\}$ and that $A\subseteq\Sigma^{\ast}$ is a regular language.
+  \begin{enumerate}
+  \item[(a)]
+    Prove that this language is regular:
+    \[
+    B = \biggl\{x\in\Sigma^{\ast}\,:\;
+    \parbox[c]{2.65in}{
+      there exists a string $w\in A$ such that $x$\\
+      is obtained from $w$ by deleting symbols}
+    \biggr\}.
+    \]
+  \item[(b)]
+    Prove that this language is regular:
+    \[
+    C = \biggl\{x\in\Sigma^{\ast}\,:\;
+    \parbox[c]{2.65in}{
+      there exists a string $w\in A$ such that $w$\\
+      is obtained from $x$ by deleting symbols}
+    \biggr\}.
+    \]
+  \end{enumerate}
+\end{question}
+
+%-----------------------------------------------------------------------------%
+
+\begin{question}[6 points]
+  The following two questions are yes/no questions.
+  In each case, answer ``yes'' or ``no,'' and give an argument in support
+  of your answer.
+  \begin{enumerate}
+  \item[(a)]
+    Let $\Sigma = \{0\}$, let $M = (Q,\Sigma,\delta,q_0,F)$ be a DFA, and
+    assume that $M$ accepts every string $w\in\Sigma^{\ast}$ such that
+    $\abs{w}<\abs{Q}$.
+    Is it necessarily the case that $\op{L}(M) = \Sigma^{\ast}$?
+  \item[(b)]
+    Let $\Sigma = \{0\}$, let $N = (Q,\Sigma,\delta,q_0,F)$ be an NFA, and
+    assume that $N$ accepts every string $w\in\Sigma^{\ast}$ such that
+    $\abs{w}<\abs{Q}$.
+    Is it necessarily the case that $\op{L}(N) = \Sigma^{\ast}$?
+  \end{enumerate}
+\end{question}
+
+%-----------------------------------------------------------------------------%
+
+\begin{question}[4 points]
+  Let $\Sigma = \{0,1\}$, and define a language
+  \[
+  \textup{Middle} = \bigl\{u\tinyspace 1\tinyspace v\,:\,u,v\in\Sigma^{\ast}\:
+  \text{and} \:|u| = |v|\bigr\}.
+  \]
+  In words, $\textup{Middle}$ is the language of all binary strings of odd
+  length whose middle symbol is~1.
+  Prove that $\textup{Middle}$ is not regular.
+\end{question}
+
+%-----------------------------------------------------------------------------%
+
+\begin{question}[2 points]
+  This is intended to be a (comparatively) difficult problem.
+  It's only worth 2 points---so give it a try but don't worry if you don't solve
+  it.
+
+  Let $\Sigma$ be an alphabet and let $A\subseteq\Sigma^{\ast}$ be a regular
+  language.
+  Prove that the language
+  \[
+  B = \bigl\{w\in\Sigma^{\ast}\,:\,www\in A\bigr\}
+  \]
+  is regular.
+\end{question}
+
+%-----------------------------------------------------------------------------%
+
+\begin{question}[1 point]
+  For each of the questions above, list the full name of each of your 360
+  classmates with whom you worked on that question.
+  (If you didn't work with anyone, that is fine: just indicate that you worked
+  alone.)
+\end{question}
+
+%-----------------------------------------------------------------------------%
+
+\end{document}

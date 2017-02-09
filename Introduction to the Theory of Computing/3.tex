@@ -1,0 +1,160 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{mathpazo}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+
+%-----------------------------------------------------------------------------%
+% Macros:
+%-----------------------------------------------------------------------------%
+
+\newcommand{\op}[1]{\operatorname{#1}}
+\newcommand{\tinyspace}{\mspace{1mu}}
+\newcommand{\rev}{\textup{\tiny R}}
+
+\newcommand{\abs}[1]{\lvert #1 \rvert}
+\newcommand{\bigabs}[1]{\bigl\lvert #1 \bigr\rvert}
+\newcommand{\Bigabs}[1]{\Bigl\lvert #1 \Bigr\rvert}
+\newcommand{\biggabs}[1]{\biggl\lvert #1 \biggr\rvert}
+\newcommand{\Biggabs}[1]{\Biggl\lvert #1 \Biggr\rvert}
+
+\renewcommand{\natural}{\mathbb{N}}
+
+\newenvironment{mylist}[1]{\begin{list}{}{
+	\setlength{\leftmargin}{#1}
+	\setlength{\rightmargin}{0mm}
+	\setlength{\labelsep}{2mm}
+	\setlength{\labelwidth}{8mm}
+	\setlength{\itemsep}{0mm}}}
+	{\end{list}}
+
+\newcounter{questioncounter}
+\newenvironment{question}{
+  \begin{mylist}{\parindent}
+  \item[\stepcounter{questioncounter}
+    \thequestioncounter.]}{
+\end{mylist}}
+
+\newenvironment{solution}{
+  \begin{trivlist}
+  \item {\bf Solution.}}{
+\end{trivlist}}
+
+%=============================================================================%
+               
+\begin{document}
+
+\pagestyle{plain}
+\thispagestyle{fancy}
+\rhead{\footnotesize Spring 2016}
+\lhead{\footnotesize CS 360 Introduction to the Theory of Computing}
+\cfoot{\thepage} 
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\begin{center}
+  \rule{0mm}{9mm}
+  {\Large\bf Assignment 3}\\[2mm]
+  Due: Wednesday, June 29 at 4:00pm
+\end{center}
+
+%-----------------------------------------------------------------------------%
+
+Most of your answers to the problems on this assignment will likely include
+descriptions of Turing machines that operate in various ways.
+You should aim for \emph{high-level descriptions} of these Turing machines
+that explain the key algorithmic ideas of how they work, as opposed to
+low-level descriptions that specify tape head movements and so on.
+
+%-----------------------------------------------------------------------------%
+
+\begin{question}[6 points]
+  Prove that the following languages are decidable, by giving high-level
+  descriptions of DTMs that decide them.
+  \begin{align*}
+    A & = 
+    \biggl\{ \langle D_0,D_1 \rangle \,:\, 
+    \parbox{3.25in}{$D_0$ and $D_1$ are DFAs,
+      and there exists at least one string that is accepted by both
+      $D_0$ and $D_1$}\;\biggr\},\\
+    B & =
+    \bigl\{\langle G\rangle\,:\,\text{$G$ is a CFG for which $\op{L}(G)$ is
+      infinite}\bigr\},\\
+    C & = 
+    \bigl\{\langle D\rangle\,:\:
+    \text{
+      $D$ is a DFA, and every string accepted by
+      $D$ is a palindrome}\bigr\}.
+  \end{align*}
+  In each case, you are to assume that a reasonable encoding scheme for the
+  objects involved has been selected---and while the languages do indeed
+  depend on the chosen encoding schemes, the fact that they are decidable does
+  not.
+\end{question}
+
+%-----------------------------------------------------------------------------%
+
+\begin{question}[6 points]
+  Let $\Sigma$ be an alphabet, and suppose that $A\subseteq\Sigma^{\ast}$
+  is Turing recognizable.
+  Prove that these languages are also Turing recognizable:
+  \begin{align*}
+    \op{Prefix}(A) & = \bigl\{x\in\Sigma^{\ast}\,:\,
+    \text{there exists $v\in\Sigma^{\ast}$ such that $xv\in A$}\bigr\},\\
+    \op{Suffix}(A) & = \bigl\{x\in\Sigma^{\ast}\,:\,
+    \text{there exists $u\in\Sigma^{\ast}$ such that $ux\in A$}\bigr\},\\
+    \op{Substring}(A) & = \bigl\{x\in\Sigma^{\ast}\,:\,
+    \text{there exists $u,v\in\Sigma^{\ast}$ such that $uxv\in A$}\bigr\}.
+  \end{align*}
+\end{question}
+
+%-----------------------------------------------------------------------------%
+
+\begin{question}[6 points]
+  Let $\Sigma$ be an alphabet, and suppose that $A,B\subseteq\Sigma^{\ast}$
+  are Turing-recognizable languages for which both $A\cap B$ and $A \cup B$ are
+  decidable.
+  Prove that $A$ is decidable.
+\end{question}
+
+%-----------------------------------------------------------------------------%
+
+\begin{question}[6 points]
+  Suppose that we have chosen an encoding scheme whereby each DTM $M$ is
+  encoded as a string $\langle M \rangle$ over some alphabet $\Sigma$.
+  Define two languages over $\Sigma$ as follows:
+  \begin{align*}
+    A & = \bigl\{ \langle M \rangle \,:\, \text{$M$ rejects the input
+      $\langle M \rangle$} \bigr\},\\
+    B & = \bigl\{ \langle M \rangle \,:\, \text{$M$ accepts the input
+      $\langle M \rangle$} \bigr\}.
+  \end{align*}
+  For the sake of this problem, you should assume that the statements
+  ``$M$ accepts the input $\langle M\rangle$'' and
+  ``$M$ rejects the input $\langle M\rangle$'' are both false if it so happens
+  that there are symbols in the string $\langle M\rangle$ that are not
+  contained in the input alphabet of $M$.
+
+  Prove that there does not exist a decidable language
+  $C\subseteq\Sigma^{\ast}$ for which both of the containments $A\subseteq C$
+  and $B \subseteq \overline{C}$ hold.
+
+  Hint: it is possible to prove the required fact directly through the use of
+  diagonalization.
+  You are, however, free to prove the fact through whatever method you choose.
+\end{question}
+
+%-----------------------------------------------------------------------------%
+
+\begin{question}[1 point]
+  For each of the questions above, list the full name of each of your 360
+  classmates with whom you worked on that question.
+  (If you didn't work with anyone, that is fine: just indicate that you worked
+  alone.)
+\end{question}
+
+%-----------------------------------------------------------------------------%
+
+\end{document}

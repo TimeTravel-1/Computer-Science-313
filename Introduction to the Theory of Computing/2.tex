@@ -1,0 +1,157 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{mathpazo}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+
+%-----------------------------------------------------------------------------%
+% Macros:
+%-----------------------------------------------------------------------------%
+
+\newcommand{\op}[1]{\operatorname{#1}}
+\newcommand{\tinyspace}{\mspace{1mu}}
+\newcommand{\rev}{\textup{\tiny R}}
+
+\newcommand{\abs}[1]{\lvert #1 \rvert}
+\newcommand{\bigabs}[1]{\bigl\lvert #1 \bigr\rvert}
+\newcommand{\Bigabs}[1]{\Bigl\lvert #1 \Bigr\rvert}
+\newcommand{\biggabs}[1]{\biggl\lvert #1 \biggr\rvert}
+\newcommand{\Biggabs}[1]{\Biggl\lvert #1 \Biggr\rvert}
+
+\renewcommand{\natural}{\mathbb{N}}
+
+\newenvironment{mylist}[1]{\begin{list}{}{
+	\setlength{\leftmargin}{#1}
+	\setlength{\rightmargin}{0mm}
+	\setlength{\labelsep}{2mm}
+	\setlength{\labelwidth}{8mm}
+	\setlength{\itemsep}{0mm}}}
+	{\end{list}}
+
+\newcounter{questioncounter}
+\newenvironment{question}{
+  \begin{mylist}{\parindent}
+  \item[\stepcounter{questioncounter}
+    \thequestioncounter.]}{
+\end{mylist}}
+
+\newenvironment{solution}{
+  \begin{trivlist}
+  \item {\bf Solution.}}{
+\end{trivlist}}
+
+%=============================================================================%
+               
+\begin{document}
+
+\pagestyle{plain}
+\thispagestyle{fancy}
+\rhead{\footnotesize Spring 2016}
+\lhead{\footnotesize CS 360 Introduction to the Theory of Computing}
+\cfoot{\thepage} 
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\begin{center}
+  \rule{0mm}{9mm}
+  {\Large\bf Assignment 2}\\[2mm]
+  Due: Friday, June 10 at 4:00pm
+\end{center}
+
+For any solutions to the problems below that include the specification of a
+CFG (whether it is to prove that a language is context-free or because you were
+asked explicitly for a CFG), you do \underline{not} need to give a formal proof
+of correctness for the CFG.
+However, if it is too difficult to verify the correctness of your CFGs,
+then you may lose points---so please aim to make them as simple and clear as
+possible, and feel free to include short explanations if you believe it will
+be helpful.
+
+%-----------------------------------------------------------------------------%
+
+\begin{question}[6 points]
+  For each of the following languages, give a CFG that generates the language:
+  
+  \begin{enumerate}
+  \item[(a)]
+    $\bigl\{w\in\{0,1\}^{\ast}\,:\,\abs{w}_0 = 2\abs{w}_1\bigr\}$.
+  \item[(b)]
+    $\overline{\textup{PAL}}$, where $\textup{PAL}$ is the language of
+    palindromes (as defined in Lecture~7).
+  \item[(c)]
+    $\overline{\textup{BAL}}$, where $\textup{BAL}$ is the language of
+    balanced parentheses (also as defined in Lecture~7).
+  \end{enumerate}
+
+  (For part (a) and for question 4 below, $\abs{w}_\sigma$ is defined as
+  the number of times the symbol~$\sigma$ appears in $w$.)
+\end{question}
+
+%-----------------------------------------------------------------------------%
+
+\begin{question}[6 points]
+  Let $\Sigma = \{0,1\}$ and let $A\subseteq\Sigma^{\ast}$ be a context-free
+  language.
+  Prove that the following languages are also context-free:
+  
+  \begin{enumerate}
+  \item[(a)]
+    $B = \bigl\{ uv \,:\,\;\text{$u,v\in\Sigma^{\ast}$ and there exists
+    $\sigma\in\Sigma$ such that $u \sigma v \in A$}\bigr\}$.
+
+  \item[(b)]
+    $C = \bigl\{ u\sigma v \,:\,\;\text{$u,v\in\Sigma^{\ast}$, 
+    $\sigma\in\Sigma$, and $u v \in A$}\bigr\}$.
+  \end{enumerate}
+  
+  In other words, $B$ is the language of all strings you can obtain by choosing
+  a string from $A$ and removing exactly one symbol from that string, while $C$
+  is the language of all strings you can obtain by choosing a string from $A$
+  and inserting exactly one additional symbol from $\Sigma$ anywhere into that
+  string.
+\end{question}
+
+%-----------------------------------------------------------------------------%
+
+\begin{question}[6 points]
+  Let $\Sigma = \{0,1\}$ and let $A\subseteq\Sigma^{\ast}$ be a regular
+  language.
+  Prove that the following languages are context-free:
+  
+  \begin{enumerate}
+  \item[(a)]
+    $B = \bigl\{w w^{\rev}\,:\,w\in A\bigr\}$.
+
+  \item[(b)]
+    $C = \bigl\{u v^{\rev}\,:\,u,v\in A,\;\abs{u} = \abs{v}\bigr\}$.
+    
+  \item[(c)]
+    $D = \bigl\{u1v\,:\,u,v\in\Sigma^{\ast},\;\abs{u}=\abs{v},\;uv\in
+    A\bigr\}$.
+  \end{enumerate}
+\end{question}
+
+%-----------------------------------------------------------------------------%
+
+\begin{question}[6 points]
+  Prove that the following language is not context-free:
+  \[
+  A = \big\{w\in\{0,1,2\}^{\ast}\,:\,\abs{w}_0 \leq \abs{w}_1 \leq \abs{w}_2
+  \bigr\}.
+  \]
+\end{question}
+
+%-----------------------------------------------------------------------------%
+
+\begin{question}[1 point]
+  For each of the questions above, list the full name of each of your 360
+  classmates with whom you worked on that question.
+  (If you didn't work with anyone, that is fine: just indicate that you worked
+  alone.)
+\end{question}
+
+%-----------------------------------------------------------------------------%
+
+\end{document}

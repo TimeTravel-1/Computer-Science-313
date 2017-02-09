@@ -1,0 +1,41 @@
+\BOOKMARK [1][-]{section.1}{May 9, 2016}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Strings and Languages}{section.1}% 2
+\BOOKMARK [1][-]{section.2}{May 11, 2016}{}% 3
+\BOOKMARK [2][-]{subsection.2.1}{Regular Languages}{section.2}% 4
+\BOOKMARK [1][-]{section.3}{May 16, 2016}{}% 5
+\BOOKMARK [2][-]{subsection.3.1}{Building Languages}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.2}{Regular Expressions}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.3}{Finite Automata}{section.3}% 8
+\BOOKMARK [1][-]{section.4}{May 18, 2016}{}% 9
+\BOOKMARK [2][-]{subsection.4.1}{Finite Automata Cont'd}{section.4}% 10
+\BOOKMARK [2][-]{subsection.4.2}{Properties of Non-Deterministic Finite Automaton}{section.4}% 11
+\BOOKMARK [2][-]{subsection.4.3}{Kleene's Theorem}{section.4}% 12
+\BOOKMARK [1][-]{section.5}{May 25, 2016}{}% 13
+\BOOKMARK [2][-]{subsection.5.1}{Properties of Non-Deterministic Finite Automaton Cont'd}{section.5}% 14
+\BOOKMARK [2][-]{subsection.5.2}{Context-Free Grammar}{section.5}% 15
+\BOOKMARK [1][-]{section.6}{Midterm Questions}{}% 16
+\BOOKMARK [1][-]{section.7}{June 6, 2016}{}% 17
+\BOOKMARK [2][-]{subsection.7.1}{Context-Free Grammar Cont'd}{section.7}% 18
+\BOOKMARK [2][-]{subsection.7.2}{Chomsky Normal Form}{section.7}% 19
+\BOOKMARK [2][-]{subsection.7.3}{Dynamic Programming \(Optional\)}{section.7}% 20
+\BOOKMARK [1][-]{section.8}{June 13, 2016}{}% 21
+\BOOKMARK [2][-]{subsection.8.1}{Midterm Review}{section.8}% 22
+\BOOKMARK [2][-]{subsection.8.2}{Properties of Context-Free Grammar}{section.8}% 23
+\BOOKMARK [2][-]{subsection.8.3}{Dynamic Programming Cont'd \(Optional\)}{section.8}% 24
+\BOOKMARK [1][-]{section.9}{June 15, 2016}{}% 25
+\BOOKMARK [2][-]{subsection.9.1}{Algorithms}{section.9}% 26
+\BOOKMARK [2][-]{subsection.9.2}{Class of Languages}{section.9}% 27
+\BOOKMARK [2][-]{subsection.9.3}{Turing Machines}{section.9}% 28
+\BOOKMARK [1][-]{section.10}{June, 20, 2016}{}% 29
+\BOOKMARK [2][-]{subsection.10.1}{Turing Machines Cont'd}{section.10}% 30
+\BOOKMARK [2][-]{subsection.10.2}{The Church-Turing Thesis}{section.10}% 31
+\BOOKMARK [1][-]{section.11}{Final Questions}{}% 32
+\BOOKMARK [1][-]{section.12}{June 22, 2016}{}% 33
+\BOOKMARK [2][-]{subsection.12.1}{Universal Turing Machine}{section.12}% 34
+\BOOKMARK [2][-]{subsection.12.2}{Diagonalization}{section.12}% 35
+\BOOKMARK [2][-]{subsection.12.3}{Undecidability}{section.12}% 36
+\BOOKMARK [1][-]{section.13}{June 27, 2016}{}% 37
+\BOOKMARK [2][-]{subsection.13.1}{Recognizable Languages}{section.13}% 38
+\BOOKMARK [2][-]{subsection.13.2}{Reductions}{section.13}% 39
+\BOOKMARK [1][-]{section.14}{June 29, 2016}{}% 40
+\BOOKMARK [2][-]{subsection.14.1}{Selected Problems}{section.14}% 41

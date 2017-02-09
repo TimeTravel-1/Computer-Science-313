@@ -1,0 +1,1169 @@
+\documentclass[11pt]{article}
+
+%%%%%%%%%%%%%% LATEX SAMPLE FILE %%%%%%%%%%%%%%%%
+% A line which starts with a % sign
+% is called a COMMENT. It is IGNORED
+% by the LaTeX processor.
+
+% Include math
+\usepackage{amsmath,amsthm,amssymb}
+% Include links
+\usepackage{hyperref}
+\usepackage{amssymb}
+
+\let\oldemptyset\emptyset
+\let\emptyset\varnothing
+
+
+
+%%%%%%%%%%%%%  THEOREMS  %%%%%%%%%%%%%%%%%
+% Let's define some theorem environments
+% To use later in the paper
+\theoremstyle{plain} % other options: definition, remark
+\newtheorem*{theorem}{Theorem}
+\newtheorem*{lemma}{Lemma}
+% By including [theorem], the lemma follows the numbering of theorem
+% e.g. Thm 1, Lemma 2, Thm 3, Thm 4, \dots
+\theoremstyle{definition}
+\newtheorem*{definition}{Definition} % the star prevents numbering
+
+\theoremstyle{example}
+\newtheorem*{example}{Example}
+% Remarks
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+
+
+
+%%%%%%%%%%%%%%  PAGE SETUP %%%%%%%%%%%%%%%%%
+% LaTeX has big default margins
+% The following sets them to 1in
+\usepackage[margin=1.5in]{geometry}
+
+% The following sets up some headers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{Introduction to Computability} % Left Header
+\rhead{\thepage} % Right Header
+\cfoot{} % Center Foot (empty)
+
+
+
+
+
+
+%%%%%%%%%%%%% SHORTCUTS %%%%%%%%%%%%%%%%%%%%
+% You can define your own shortcuts too.
+% Examples of custom commands
+\newcommand{\half}{\frac{1}{2}}
+\newcommand{\cbrt}[1]{\sqrt[3]{#1}}
+
+\begin{document}
+
+% Set up a title
+\title{Computer Science 313}
+\author{David Ng}
+\date{Spring 2016}
+\maketitle
+
+% This line makes a ToC
+\tableofcontents
+
+% This line starts a new page
+\eject
+
+%%%%%%%%%%%%% January 11 %%%%%%%%%%%%%%%%%%%%
+\section{May 9, 2016} 
+\subsection{Strings and Languages}
+
+\begin{definition}
+An \textbf{alphabet} is an arbitrary finite set containing elements called symbols, characters, or letters. An alphabet will be denoted by $\Sigma$. 
+\end{definition}
+
+\begin{example}
+For instance, $\Sigma = \{a, b\}$ is an alphabet containing two elements. 
+\end{example}
+
+\begin{definition}
+A \textbf{string} is a finite sequence of zero or more symbols from $\Sigma$. The symbol $\Sigma^*$ denotes the set of all possible strings over $\Sigma$. The \textbf{length} of a string $s$ is denoted by $|s|$. The \textbf{concatenation} of strings $s_1 = ab$ and $s_2 = ba$ is $s_b= s_1 \cdot s_2 = abba$. It may also be denoted by $s_b = s_1s_2$. 
+
+\end{definition}
+
+\begin{remark}
+The empty string is denoted by $\epsilon$. 
+\end{remark}
+
+\begin{example}
+$s_1 = abab$ and $s_2 = 001$ are examples of strings.
+\end{example}
+
+\begin{definition}
+A \textbf{substring} of $s$ is a string obtained from $s$ by deleting zero or more symbols from the beginning or the end of $s$. 
+A \textbf{subsequence} of $s$ is a string obtained from $s$ by deleting zero or more symbols from anywhere in $s$. 
+\end{definition}
+
+\begin{remark}
+We note that a substring is a continuous sequence of characters from the string, whereas this is not the case with a subsequence. 
+\end{remark}
+
+\begin{example}
+Given the string "$EXCITING COURSE$", "$EXCITING$" is a substring and "$EXCITCOURSE$" is a subsequence. 
+\end{example}
+
+\begin{definition}
+A \textbf{language} is a set of string over some finite alphabet. 
+\end{definition}
+
+\begin{example}
+For instance, $L_1 = \{0,1\}^*$, $L_2 = \{\epsilon\}$ and $L_3 = \{a^nb^m : m \geq 0\}$, are examples of languages. 
+\end{example}
+
+\begin{remark}
+We note that a character $a$ or string $s$ raised to a power $m$ indicates that character or string concatenated $m$ times. 
+\end{remark}
+
+\begin{definition}
+The \textbf{concatenation} of two languages $A$ and $B$ is $A \cdot B = \{xy : x \in A\text{ and } y \in B\}$. 
+\end{definition}
+
+\begin{example}
+Let $A = \{hocus, abraca\}$ and $B = \{pocus, dabra\}$. Then $A\cdot B = \{hocuspocus, hocusdabra, abracapocus, abracadabra\}$. We note that the operation is not commutative. 
+\end{example}
+
+\begin{remark}
+The empty set concatenated with a string $A$ is the empty set, while the set of the empty string concatenated with a string $A$ is $A$. These properties are commutative.
+\end{remark}
+
+\begin{definition}
+The \textbf{kleene star} $L^*$ of a language $L$ is the set of all the strings obtained by concatenating a sequence of zero or more strings from the language $L$. 
+\end{definition}
+
+\begin{example}
+${\epsilon}^* = {\epsilon}$. 
+\end{example}
+
+\begin{example}
+Let $\Sigma = \{a,b,c\}$, $L_1 = \{a^ib^i : i \geq 0\}$ and $L_2 = \{a^ib^ic^i : i \geq 0\}$. Is it the case that $L_1 \cap L_2 = \varnothing$? 
+\end{example}
+
+This is false since the empty string $\epsilon \in L_1 \cap L_2$. 
+
+\begin{example}
+Let $\Sigma = \{a,b,c,d\}$, $L_1 = \{a^ib^i : i \geq 0\}$ and $L_2 = \{c^id^i : i \geq 0\}$. Is it the case that $L_1L_2 = \{a^ib^ic^id^i : i \geq 0\}$? 
+\end{example}
+
+This is false since the exponents may be different. 
+
+
+
+
+
+
+
+
+\section{May 11, 2016}
+
+\subsection{Regular Languages}
+\begin{remark}
+Note that all finite languages are regular???????
+\end{remark}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{May 16, 2016}
+\subsection{Building Languages}
+
+\begin{example}
+Let $L$ be any language. Prove that $L = L^+$ if and only if $LL \subseteq L$.
+\end{example}
+
+In the forward direction, we first assume that $L = L^+$. Because $LL \subseteq L^+$, then $LL \subseteq L$.
+
+In the reverse direction, we suppose that $LL \subseteq L$. Now, we will show that $L = L^+$. $L \subseteq L^+$ by definition of $L^+$. To prove that $L^+ \subseteq L$, we let $w \in L^+$. Then $w$ is $s_1s_2...s_n$ such that $n\geq 1$ and $s_i \in L$. We can reduce the number of strings needed to represent $w$ since we know that $s_1 \in L$ and $s_2 \in L$. Thus, $s_1s_2 \in LL$. But $LL\subseteq L$, so $s_1s_2 \in L$. We repeat this process to show that $w$ in a string from $L$. 
+
+
+\subsection{Regular Expressions}
+
+\begin{definition}
+A language $L$ is \textbf{regular} if and only if it satisfies one of the following conditions:
+
+	\begin{itemize}
+		\item $L$ is empty.
+		\item $L$ contains a single string (which could be the empty string $\epsilon$).
+		\item $L$ is the union of two regular languages.
+		\item $L$ is the concatenation of two regular languages.
+		\item $L$ is the Kleene star of a regular language.
+	\end{itemize}
+\end{definition}
+
+\begin{example}
+	Let $L$ be the language such that every pair of adjacent $0$'s appear before every pair of adjacent $1$'s. We wish to define a regular expression for $L$.
+\end{example}
+
+Let $L_1$ be a language such that is does not contain 11, and let $L_2$ be a language such that it does not contain 00. Then we note that $R(L) = R(L_1)+ R(L_2)$. Furthermore, the we can deduce that $R(L_1) = (0+10)^*(1+\epsilon)$ while $R(L_2) = (1+01)^*(0+\epsilon)$. Therefore
+
+$$R(L) = (0+10)^*(1+\epsilon)+(1+01)^*(0+\epsilon)$$
+
+\subsection{Finite Automata}
+
+\begin{definition}
+A \textbf{deterministic finite automaton} is a state machine such that each node has exactly one outgoing transition for each character in the alphabet. For each state, there must be exactly one transition for each letter in $\Sigma$.\end{definition}
+
+\begin{remark}
+Note that in each state, the DFA remembers only the current state. 
+\end{remark}
+
+
+
+
+\begin{theorem}
+Palindromes are not regular. That is, a DFA cannot be constructed to accept only palindromes.
+\end{theorem}
+
+\begin{proof}
+Suppose to the contrary that there were a DFA for palindromes. Let $N$ be the number of states. Then, there necessarily exists at least two palindromes $x$ and $y$ where $x \neq y$ such that after reading half of each palindrome, the DFA is in the same state. Let us denote this state as $q$. 
+
+Since $y$ is a palindrome, then there is a path from $q$ to a final state using the last half of $y$. But then a string which is formed with the first half of $x$ and the last half of $y$ would reach the final state despite not being a palindrome. This is a contradiction.
+\end{proof}
+
+\section{May 18, 2016}
+
+\subsection{Finite Automata Cont'd}
+
+\begin{definition}
+A \textbf{non-deterministic finite automaton} is a state machine such that each node has zero or more outgoing transitions for each character in the alphabet. For each state, there may be 0, 1, or more transitions for each letter in $\Sigma$.
+\end{definition}
+
+\begin{remark}
+We may have $\epsilon$-transitions in NFA's, where there are no transitions for a given character in the alphabet.
+\end{remark}
+
+In the case of NFA's, we may accept a particular sequence of inputs if at least one of the series of choices of states dictated by the input leads to an accepting state. We also note that any DFA is indeed an NFA.
+
+
+\subsection{Properties of Non-Deterministic Finite Automaton}
+An NFA may be described by the tuple $(Q, \Sigma, \delta, q_0, F)$ where
+
+\begin{itemize}
+	\item $Q$ is a finite set of states.
+	\item $\Sigma$ is the alphabet.
+	\item $\delta:Q \times \Sigma_{\epsilon} \rightarrow
+	 2^Q$ is the transition function.
+	\item $q_0$ is the starting state.
+	\item $F \subseteq Q$ is the set of final states. 
+\end{itemize} 
+
+
+Note that $2^Q$ is the number of subsets of $Q$, and $\Sigma_{\epsilon} = \Sigma \cup \{ \epsilon \}$. An NFA $N=(Q, \Sigma, \delta, q_0, F)$ accepts $w \in \Sigma^*$ if there is a sequence of states $n_0, n_1,...,n_k \in Q$ and $w = w_1w_2...w_k$ with $w_i \in \Sigma_{\epsilon}$ such that 
+
+\begin{enumerate}
+	\item $n_0 = q_0$
+	\item $n_{i+v} \in \delta(n_i, w_{i+v})$ for $i = 0,1,...,k-1$
+	\item $n_k \in F$
+\end{enumerate}
+
+\begin{definition}
+A language is considered \textbf{regular} if there is an NFA which accepts it. We shall refer to this definition for the following theorems.
+
+\end{definition}
+
+\begin{theorem}
+The set of regular languages is closed under the union operation. \end{theorem}
+
+\begin{proof}
+Let $L_1$ and $L_2$ be two languages. Then there are NFA's which accept each of them. We now provide a starting state with $\epsilon$-transitions to the original starting states of $L_1$ and $L_2$. We obtain a new NFA such that it represents the union of $L_1 \cup L_2$. 
+\end{proof}
+
+\begin{theorem}
+The set of regular languages is closed under concatenation.
+\end{theorem}
+
+\begin{proof}
+Let $L_1$ and $L_2$ be two languages. Then there are NFA's which accept each of them. We attach $\epsilon$-transitions from each accepting state of $L_1$ to the starting state of $L_2$. We obtain a new NFA such that it represents the union of $L_1$ with $L_2$. 
+\end{proof}
+
+\begin{theorem}
+The set of regular languages is closed under the kleene star operation .
+\end{theorem}
+
+\begin{proof}
+Let $L$ be a regular language. We need to show that $L^*$ is also a regular language. It follows that an NFA representing $L$ could be made to represent $L^*$ by including $\epsilon$-transitions from the accepting states to the starting state. Furthermore, we need to accept the empty string, so we may include epsilon transitions from the starting state to the accepting states. Therefore $L^* = \bigcup \limits_{i=0}^\infty L^i$ is regular.
+\end{proof}
+
+\begin{remark}
+Note that although $L^0 = \{\epsilon\}$ is regular, $L^1 = L$ is regular, $L^2 = LL$ is regular (by concatenation), and so on... It is not the case that this shows $L^*$ is regular. Thus we note that infinite union and concatenation are not regular.
+\end{remark}
+
+
+\begin{theorem}
+For every NFA, $N$, there exits a DFA, $M$, such that $L(N) = L(M)$. That is, the language accepted by $N$ and $M$ is the same.
+\end{theorem}
+
+
+\begin{proof}
+Let $N= (Q, \Sigma, \delta, q_0, F)$ and $M = (Q', \Sigma, \delta', q_0', F')$. We will define $\epsilon(s)$ as $$\epsilon(s) = \{ q \in Q | q \text{ is reachable from some }s \in S \text{ by taking 0 or more } \epsilon\text{-transitions}\}$$
+
+Now, we have 
+
+\begin{enumerate}
+	\item $Q' = 2^Q$ is the number of subsets of $Q$
+	\item $q_0' = \epsilon(\{q_0\})$
+	\item $F' = \{R \in Q'|f \in R \text{ for some }f\in F\}$
+	\item $\delta':Q'\times \Sigma \rightarrow Q'$, such that $\delta'(R,a) = \bigcup\limits_{\rho \in R} \epsilon(\delta(\rho, a))$
+
+\end{enumerate}
+\end{proof}
+
+\begin{remark}
+An NFA may be represented by a DFA with an exponential amount of states.
+\end{remark}
+
+\subsection{Kleene's Theorem}
+
+\begin{theorem}
+A language $L$ can be described by a regular expression $\iff L$ is accepted by a DFA.
+\end{theorem}
+
+\begin{proof}
+Proof of this theorem follows from the following established properties:
+\begin{enumerate}
+	\item Every DFA can be transformed into an equivalent NFA.
+	\item Every NFA can be transformed into an equivalent DFA.
+	\item Every regular expression can be transformed into an equivalent NFA (by closure theorems).
+	\item Every NFA can be transformed into an equivalent regular expression.
+\end{enumerate}
+
+\end{proof}
+
+
+\begin{theorem}
+Every language described by a regular expression is accepted by an NFA.
+\end{theorem}
+
+\begin{proof}
+	We prove by induction that every language described by a regular expression is accepted by an NFA with exactly one accepting state different from the starting state. Let $R$ be any regular expression over some alphabet $\Sigma$. 
+	
+	Base Case: When $R = \emptyset$, $L(R) = \emptyset$. this corresponds to a starting state and a final state, where there is no transition from the starting state to the accepting state. When $R = \epsilon$, $L(R) = \{\epsilon\}$. This corresponds to an NFA where there is an $\epsilon$-transition from the starting state to the accepting state. When $R = a$ where $a \in \Sigma$, $L(R) = \{a\}$. This corresponds to an NFA with a starting state which transitions to the accepting state on input $a$.
+
+	Induction Hypothesis: Let $R$ be of the form $R = ST$, so that $L(R) = L(S)L(T)$. We simply follow the rules for concatenation and use an $\epsilon$-transition from the accepting state of $S$ to the starting state of $T$. The cases for union and kleene star are similar. 
+\end{proof}
+
+
+
+
+
+
+
+
+
+\section{May 25, 2016}
+\subsection{Properties of Non-Deterministic Finite Automaton Cont'd}
+
+\begin{definition}
+The \textbf{reversal} of a language $L$ is denoted and defined by $$L^R = \{w^R | w\in L\}$$ which consists of all the strings in $L$ reversed.
+\end{definition}
+
+\begin{example}
+Given that $w = abc$, find $w^R$.
+\end{example}
+
+$w^R$ would be $cba$.
+
+\begin{definition}
+The \textbf{compliment} of a language $L$ is denoted and defined by
+
+$$\bar{L} = \Sigma^*\backslash L$$
+\end{definition}
+
+\begin{example}
+Find the compliment of $L = \{a, abc\}$.
+\end{example}
+
+$\bar{L} = \Sigma^*\backslash\{a, abc\}$.
+\begin{theorem}
+The set of regular languages is closed under reversal.
+\end{theorem}
+
+
+\begin{proof}
+Let $N$ be an NFA for a language $L$. We shall assume that $N$ has a single final state. To construct an NFA which accepts $L^R$, we simply reverse the direction of the transitions from each state. We obtain an NFA such that the accepting state becomes the starting state, and vice versa. In the case that $N$ has multiple final states, we may simply construct an $NFA$ with a single final state by taking $\epsilon$-transitions from the original final states to this final state.
+\end{proof}
+
+\begin{theorem}
+The counting language $L = \{0^n1^n | n \geq 0 \}$ is not regular.
+\end{theorem}
+
+\begin{proof}
+Let $M$ be a DFA for a language $L$ with $k$ states. Let us assume that this language is regular. We will show by contradiction that the language is not regular. We choose an $n > 2k$. Since $n > 2k$ and $M$ must accept $0^n1^n$, then there exists a state which is traversed at least twice by the sequence of 0's. But then since the current state is the only memory of a DFA, the DFA cannot distinguish between these two strings and hence cannot correctly recognize the language.
+\end{proof}
+
+\begin{example}
+Let $A \subseteq \{0,1\}^*$ be a regular language, and let $B= \{uv | u,v \in \{0,1\}^* \text{ and } u \sigma v \in A \text{ for some } \sigma \in \{0,1\}\}$. Show that $B$ is regular.
+\end{example}
+
+Let $M$ be a DFA for $A$. We will take two copies of $M$ to form $M_0$ and $M_1$. We construct an NFA for $B$ which we denote $N$. We take the starting state of $M_0$ to be the starting state of $N$, and take the accepting state of $M_1$ to be the accepting state of $N$. We then take $\epsilon$-transitions from each state in $M_0$ to each state in $M_1$ in which there exists a transition to in $M_0$ (This simulates the deletion of a character). This is an NFA which describes $B$. Therefore, $B$ is regular.
+
+
+
+
+
+\subsection{Context-Free Grammar}
+
+
+\begin{definition}
+A \textbf{context-free language} is a language that can be built from strings using unions, concatenation, kleene star and recursion.
+\end{definition}
+
+\begin{definition}
+A \textbf{context-free grammar (CFG)} is a structure given by $G = (V, \Sigma, R, S)$ where
+
+	\begin{itemize}
+		\item $V$ is a set of non-terminal symbols (uppercase Latin).
+		\item $\Sigma$ is a set of terminal symbols, disjoint from $V$.
+		\item $R$ is a set of production rules detailing how each non-terminal can be converted to a string of terminals and non-terminals.
+		\item $S$ is a start symbol that is an element of $V$.
+	\end{itemize}
+\end{definition}
+
+\begin{example}
+Given the rule of replacing $S \rightarrow 0S1$, we obtain $00S11 \rightarrow 000S111 \rightarrow 0000S1111...$
+\end{example}
+
+Let $G$ by a CGF, and $S$ be a start symbol. Then the language accepted by $G$ is denoted and defined by $$L(G) = \{w \in \Sigma^* | S\overset{*}{\implies} w\}$$
+
+where $\overset{*}{\implies}$ means that we can transform $S$ into $w$ by a sequence of productions.
+
+
+\begin{theorem}
+The language accepted by the grammar $G |( S \rightarrow 0S1$, $S \rightarrow \epsilon)$ is the language $L(G) = \{0^n1^n | n \geq 0\}$. \end{theorem}
+
+\begin{proof}
+a) We prove that $S \overset{*}{\implies} 0^n1^n$ for any $n \geq 0$ by induction on $n$. 
+
+In the base case, $S \rightarrow \epsilon$. This is true since $\epsilon$ is a part of the language. Now, suppose that $S \overset{*}{\implies} 0^k1^k$ for any $0 \leq k < n$. Then 
+$$S \rightarrow 0S1 \rightarrow 0(0^{n-1}1^{n-1})1 = 0^n1^n$$
+
+b) For every $w \in \Sigma^*$ such that $S \overset{*}{\implies} w$, we have $w = 0^n1^n$ for some $n$. We again prove by induction. Suppose that for any $x \in \Sigma^*$ with $|x| < |w|$ and $S \overset{*}{\implies} x$, then $x = 0^k1^k$ for some $k$. In the case that $w = \epsilon$, this implies that $w = 0^01^0$. Otherwise, $w = 0x1$ for some $x$. Furthermore, $|x| < |w| \implies x = 0^k1^k$ for some $k$. This implies that $w = 0^{k+1}1^{k+1}$.
+
+\end{proof}
+
+\begin{example}
+Generate all palindromes given the language $PAL = \{w \in \{0,1\}^n|w = w^R\}$.
+\end{example}
+
+We note that it would be of the form
+$S \rightarrow (0S0) | (1S1) | 0|1|\epsilon$.
+
+
+\begin{example}
+Generate the language $L = \{ w \in \{0,1\}^* |$ w starts and ends with the same symbol and $|w| \geq 2\}$.
+\end{example}
+
+We note that it would be of the form $S \rightarrow (0T0 )| (1T1)$ where $T \rightarrow (0T)|(1T)|\epsilon$.
+
+\begin{example}
+Generate the language $L = \{0^n1^n0^m1^m | n \geq 0$, $m \geq 0\}$.
+\end{example}
+
+First, we separate the language into two languages where $L_1 = \{0^n1^n | n \geq 0\}$ and $L_1 = \{0^m1^m | m \geq 0\}$ where $L = L_1L_2$. For $L_1$ we have $S_1 \rightarrow (0S_11)|\epsilon$ and for $L_2$ we have $S_2\rightarrow (0S_21)|\epsilon$. For language $L$ then, it becomes $S \rightarrow S_1S_2$.
+
+\begin{example}
+Generate the language $L = \{0^n1^m0^m1^n | n \geq 0$, $m \geq 0\}$.
+\end{example}
+
+We will proceed by solving for the outer part, and then the inner part by grouping $0^n(1^m0^m)1^n$. The outer part is generated by $S \rightarrow (0S1) | T$. The inner part is generated by $T \rightarrow (1T0)|\epsilon$.
+
+\begin{example}
+Generate the language $L = \{w | \#(0,w) = \#(1,w)\}$.
+\end{example}
+
+We note that this is the language where the number of 0's is the same as the number of 1's. It is of the form $S \rightarrow (0S1)|(1S0)|(SS)|\epsilon$.
+
+
+\begin{example}
+Generate all numbers without leading 0's.
+\end{example}
+
+It would be of the form $S \rightarrow 0 | (TN)$, $T \rightarrow 1|2|3|4|5|6|7|8|9$, $N \rightarrow (DN)|\epsilon$ and $D \rightarrow 0|1|2|3|4|5|6|7|8|9$.
+
+\section{Midterm Questions}
+
+The midterm is out of 31 marks, and contains the following form of questions:
+\begin{enumerate}
+
+	\item 8 short answer questions.
+	\item 6 true/false questions with justification.
+	\item Construct a DFA and corresponding regular expression.
+	\item Construct an NFA.
+	\item Construct a context free grammar (bonus question).
+
+\end{enumerate}
+
+ \begin{remark}
+We note that the counting language and the language of palindromes are two examples of non-regular languages.
+ \end{remark}
+
+\section{June 6, 2016}
+
+\subsection{Context-Free Grammar Cont'd}
+
+We note that in practice, context-free grammars are used in programming languages where parsing by the compiler is used to interpret the language.
+
+\begin{definition}
+A \textbf{parse tree} is a tree encoding the steps in a derivation of a context-free grammar. The internal nodes represent the non-terminals used in the derivation, while the leaf nodes represent the terminals. By employing inorder traversal, we generate the string of the particular derivation.
+\end{definition}
+
+\begin{definition}
+A CFG is \textbf{ambiguous} if there exists a string can be derived in at least two different ways. We note that we may show that a CFG is ambiguous by constructing two distinct parse trees which generate the same string.
+\end{definition}
+
+\begin{remark}
+It may be possible to eliminate ambiguity by rewriting the CFG, though there is no fixed procedure for doing this. There are some CFG's that are inherently ambiguous and cannot be rewritten without ambiguity.
+\end{remark}
+
+\subsection{Chomsky Normal Form}
+
+We note that the following grammar is ambiguous.$$S \rightarrow SSSS|\epsilon$$ This is because we can form the empty string in many different ways. To reduce the possibility of ambiguity, we utilize the Chomsky Normal Form.
+
+\begin{definition}
+A CFG is in \textbf{Chomsky Normal Form} if it satisfies all of the following conditions:
+
+\begin{enumerate}
+	\item The starting non-terminal $S$ does not appear on the right side of any production rule.
+	\item The starting non-terminal $S$ may have the production rule $S \rightarrow \epsilon$.
+	\item The right side of every other production rule is either a terminal of a string of exactly two non-terminals.
+\end{enumerate}
+\end{definition}
+
+\begin{remark}
+We note that the parse tree of a CNF is a full binary tree.
+\end{remark}
+
+\begin{definition}
+A sequence of parentheses is \textbf{balanced} if the total number of left parentheses equals the total number of right parentheses, and for all prefixes of the sequence, the number of left parentheses traversed is greater than or equal to the number of right parentheses traversed. 
+\end{definition}
+
+\begin{example}
+Generate the language of balanced parentheses.
+\end{example}
+
+We note that it would be of the form  $$S \rightarrow [S]|SS|\epsilon$$ where [ ] denotes the left and right parentheses.
+
+\begin{theorem}If $x$ is balanced, then $S \overset{*}{\implies} x$.
+\end{theorem}
+
+
+\begin{proof}
+Suppose that $x$ is balanced. For the base case, when the length of $x$ is 0, we have that $x = \epsilon$. But this is generated by $S \rightarrow \epsilon$. Now, suppose that we can generate any balanced string of length $<n$. Let $x$ be such that $|x| = n$. There are two cases to consider: whether there is a proper prefix $y$ of $x$ such that it is balanced, or not. In the first case, we note that using the fact that $x$ is balanced and $y$ is balanced, we take $z$ to be the part of $x$ which comes after $y$ which can be generated by $S$ since $|z| < n$ and $z$ is balanced. Thus, $x$ is balanced. In the second case, then $x=[z]$ for some $z$. In this case, $x$ can be generated by the rule $ S \rightarrow [S]$. Furthermore, $z$ is balanced since the left parentheses and right parentheses is simply the number of those is $x$ subtract and in every prefix of $z$, the number of left parentheses is greater than or equal to the number of right parentheses due to $x$ being balanced.
+
+
+\end{proof}
+
+
+
+
+
+
+
+\subsection{Dynamic Programming (Optional)}
+Dynamic programming is the practice of dividing a problem into multiple sub-problems. Each sub-problem is solved independently and the result is stored, the results are combined for the full solution to the problem. 
+
+\begin{example}
+Given a sequence of integers, find the length of the longest increasing subsequence (Note that this may differ from the longest substring).
+\end{example}
+
+We begin by splitting the problem into the smaller sub-problem of determining the longest increasing subsequence that starts at each index of the sequence. We then find the largest of these to determine the solution.
+
+
+
+\section{June 13, 2016}
+
+
+
+
+
+
+\subsection{Midterm Review}
+
+\begin{example}
+If $x = a_1a_2...a_n$ and $y = b_1b_2...b_n$ are two strings of the same length $n$, define $alt(x,y)$ to be the string in which the symbols of $x$ and $y$ alternate, starting with the first symbol of $x$, that is
+
+$$alt(x,y) = a_1b_1a_2b_2...a_nb_n$$
+
+If $L$ and $M$ are languages, define $alt(L,M)$ to be the language of all strings of the form $alt(x,y)$ where $x$ is a string in $L$ and $y$ is a string in $M$ of the same length. If $L$ and $M$ are regular languages, prove that $alt(L,M)$ is regular.
+\end{example}
+
+Since $L$ and $M$ are regular, suppose that we have a DFA for each such that $L(D_1) = L$ and $L(D_2)=M$. Let us consider the ordered triple of $(q_1, q_2, b)$, where $q_1 \in D_1$, $q_2 \in D_2$ and $b = 0/1$. If $b = 0$, the first DFA takes a step, and if $b=1$, then the second DFA takes a step. The start state is given by $(q_{01}, q_{02}, 0)$ and the final state is therefore given by $(f_1, f_2, 0)$, where $f_1 \in F_1$ and $f_2 \in F_2$. The transition function is given
+
+$$\delta((q_1, q_2, b), \sigma) = \begin{cases}
+(\delta_1(q_1, \sigma), q_2, 1) \text{ if } b = 0\\
+(q_1, \delta_2(q_2, 0), 0) \text{ if } b = 1
+\end{cases}$$
+
+\subsection{Properties of Context-Free Grammar}
+
+\begin{theorem}
+Given CFG's $A$ and $B$ over the same alphabet then $A \cup B$, $AB$ and $A^*$ are context-free.
+\end{theorem}
+
+\begin{proof}
+We may formalize the CFG's as $G_A = (V_A, \Sigma, R_A, S_A)$ and $G_B = (V_B, \Sigma, R_B, S_B)$. Thus, $L(G_A) = A$ and $L(G_B) = B$. We also let $V_A \cap V_B = \emptyset$, which we may construct by simply using new terminals to represent the values. 
+
+\begin{enumerate}
+	\item $A\cup B$ can be produce by adding a new start variable S, and the following production rules $$S \rightarrow S_A | S_B$$
+	$$R_A$$
+	$$R_B$$
+	\item $AB$ can be produced by adding a new start variable S, and the following production rules $$S \rightarrow S_AS_B$$
+	$$R_A$$
+	$$R_B$$
+	\item $A^*$ can be produced by adding a new start variable S, and the following production rules $$S \rightarrow SS_A|\epsilon$$
+	$$R_A$$
+\end{enumerate}
+\end{proof}
+
+\begin{theorem}
+Every regular language is context-free.
+
+\end{theorem}
+
+\begin{proof}
+We note that for any regular expression over an alphabet $\Sigma$, we can construct a context-free grammar: 
+\begin{enumerate}
+	\item $R = \emptyset$:	$S \rightarrow S$
+	\item $R = \epsilon$: $S \rightarrow \epsilon$
+	\item $R = a$:	$S \rightarrow a$
+\end{enumerate}
+
+By structural induction, we may use the closure properties for union, concatenation and kleene star to show that every regular expression may be expressed as a context-free grammar.
+\end{proof}
+
+\begin{example}Let $A$ be a regular language, and let $M$ be the corresponding DFA for $A$. We have $M = (Q, \Sigma, \delta, q_0, F)$. Define a CFG for $A$.
+\end{example}
+
+We may define a corresponding CFG for $A$ as $G = (V, \Sigma, S, R)$ as follows. For each state $q_i \in Q$, we introduce a non-terminal $X_i$. We define the following production rules for $R$ such that $\forall k,m \in \{0,1,...m-1\}$ and $\forall \sigma \in \Sigma$ we have the following:
+
+$$\delta(q_k, \sigma) = q_m \implies	X_k \rightarrow \sigma X_m$$
+$$\forall q_f \in F \implies X_f \rightarrow \epsilon$$
+
+\begin{remark}
+An example of a language that is not context-free is $L= \{a^mb^mc^m | m \geq 0 \}$.
+\end{remark}
+
+\begin{theorem}
+The family of context-free languages is not closed under intersection or complementation.
+\end{theorem}
+
+\begin{proof}
+We give a counterexample. Let $L_1 = \{a^nb^nc^m | m\geq 0, n \geq 0\}$ and $L_2 = \{a^nb^mc^m | m\geq 0, n \geq 0\}$. We note that both of these languages are context-free, since they are formed by using the concatenation of the counting language with another context-free language. We note that the intersection of $L_1 \cap L_2 = L$, where $L = \{a^mb^mc^m | m \geq 0\}$ which is not a context-free language. 
+
+We use De Morgan's law to note that $$L_1 \cap L_2 = \overline{\overline{L_1} \cup \overline{L_2}}$$ We assume to the contrary that the context-free languages are closed under complement. This means that $\overline{L_1}$ and $\overline{L_2}$ are context-free. But we know that context-free languages are closed under union, so $\overline{L_1} \cup \overline{L_2}$ is context-free. But then $\overline{\overline{L_1} \cup \overline{L_2}}$ is context-free. By De Morgan's law, this is $L_1 \cap L_2$, which we know is not context-free.
+
+\end{proof}
+
+
+\subsection{Dynamic Programming Cont'd (Optional)}
+
+\begin{example}
+Let $M = (Q, \Sigma, \delta,q_0, F)$ be an NFA. Does $M$ accept a string $w$? 
+\end{example}
+
+We represent the states in a boolean array such that $F[q_i] = 1 \iff q_i \in F$, and $F[q_i] = 0$ otherwise. We represent the transition function as a two-dimensional array such that $D(q_k, \sigma, q_m) = 1 \iff q_m \in \delta(q_k, \sigma)$ and $D(q_k, \sigma, q_m) = 0$ otherwise. We can then write a function $Accept$ defined as follows 
+
+$$Accept(q_i, w) = \begin{cases}
+	1	\text{ if } w  = \epsilon \text{ and } q_i \in F\\
+	0 	\text{ if } w = \epsilon  \text{ and } q_i \notin F\\
+	Accept(n, x)	\text{ if } w = ax, \text{ where }a \in \Sigma \text{ and } \forall n \in \delta(q_i, k)
+	
+\end{cases}
+$$
+
+However, we note that this recursive solution takes an exponential amount of running time to compute. This recursive algorithm takes exponential time since we are computing results many times, instead of storing the results of each sub-problem. 
+
+\section{June 15, 2016}
+
+\subsection{Algorithms}
+
+
+
+\begin{definition}
+The \textbf{Floyd-Warshall Algorithm}  is an algorithm for finding shortest paths in a weighted graph with positive or negative edge weights (but with no negative cycles). A single execution of the algorithm will find the lengths (summed weights) of the shortest paths between all pairs of vertices. 
+
+
+Let the input be a directed graph $G=(V,E)$ and $w(u \rightarrow v)$ denote the weight of the edge from $u$ to $v$. We find the shortest path between all pairs of nodes. Assuming that there are no negative cycles, $\pi(u,v,n)$ denotes the shortest path between $u$ and $v$ where all nodes have indices at most $n$ (except $u$ and $v$). Thus, given vertices $1, 2, ..., |V|$, we need to consider all vertices $\pi(u,v,|V|)$. 
+
+When $n=0$, we have $\pi(u,v,0) = w(u \rightarrow v)$. When $n > 0$, $\pi(u,v,n)$ either contains $n$, or it does not. In the case that it does not contain $n$, then 
+
+$$\pi(u,v,n) = \pi(u,v,n-1)$$
+
+In the case that it does contain $n$, then
+
+$$\pi(u,v,n) = \pi(u,n,n-1) + \pi(n,v,n-1)$$
+
+We use these recursive definitions to find the shortest path between any pair of vertices, by calling the minimum of the first expression with the second. 
+
+\end{definition}
+
+\begin{definition}
+The \textbf{CYK Algorithm} is a parsing algorithm for context-free grammars, named after its inventors, John Cocke, Daniel Younger and Tadao Kasami.
+
+Let the input be a string $w$ of length $n$ and a CFG $G=(V, \Sigma, S,R)$ in CNF. That is, we have the production rules $A \rightarrow BC$ and $A \rightarrow a$. The output is $true$ if $w \in L(G)$ and $false$ otherwise. 
+
+We split the problem into a smaller problems, so we let $Generates(A,x)$  be a function which outputs $true$ if $A \overset{*}{\implies} x$.
+
+$$Generates(A,x) = \begin{cases}
+	1 \text{ if } A \rightarrow x \text{ and } |x|=1\\
+	0 \text{ if } A \not\rightarrow x \text{ and } |x|=1\\
+	\forall_{A\rightarrow BC} \forall_{x=yz} Generates(B,y) \land Generates(C,z) \text{ otherwise}
+\end{cases}$$
+\end{definition}
+
+\subsection{Class of Languages}
+
+We note that regular languages are a subset of context-free languages. Context-free languages are a subset of P (The set of languages for which we may decide membership in polynomial time). P is a subset of NP, which is the complexity class for which we may verify in polynomial time. It is not known whether P = NP. 
+
+\subsection{Turing Machines}
+
+Early attempts to rigorously define an algorithm resulted in Alonzo Church's $\lambda$-calculus. In 1936, Alan Turing presented the Turing machine, encapsulating the idea of what is an algorithm. A Turing machine is defined as a one way infinite tape, on which is written symbols from a finite alphabet, with a read/write head. Formally, a Turing machine is represented as $M=(Q, q_0, q_{accept}, q_{reject}, \Sigma, \Gamma, \delta)$:
+
+\begin{enumerate}
+	\item $Q$: A finite set of states.
+	\item $q_0$: The starting state.
+	\item $q_{accept}$: The accepting states.
+	\item $q_{reject}$: The rejecting states.
+	\item $\Sigma$: A finite input alphabet (Does not include blank).
+	\item $\Gamma$:  A finite tape alphabet ($\Sigma$ with blank).
+	\item $\delta$: A transition function of the form $\delta: Q' \times \Gamma \rightarrow Q \times \Gamma \times \{L,R\}$ where $Q' = Q\setminus \{q_{accept}, q_{reject}\}$.
+\end{enumerate}
+
+The \textbf{configuration} of a Turing machine presents the position of the head on the tape, the content of the tape, and the state of control. 
+
+$$C = uqv$$ where
+
+\begin{enumerate}
+	\item $u \in \Gamma^*$ is the string before the head.
+	\item $q \in Q$.
+	\item $v \in \Gamma^*$ is the string after the head.
+\end{enumerate}
+
+A Turing machine $M$ accepts an input $w \in \Sigma^*$ if there is a sequence of states from $q_0w$ (the initial configuration) to a configuration that contains $q_{accept}$ in a finite number of steps. A Turing machine $M$ rejects an input $w \in \Sigma^*$ if there is a sequence of states from $q_0w$ to a configuration that contains $q_{reject}$ in a finite number of steps. 
+
+
+\section{June, 20, 2016}
+\subsection{Turing Machines Cont'd}
+
+The \textbf{language} of a Turing machine $M$ is denoted and defined as 
+
+$$L(M) = \{w \in \Sigma^* | M \text{ accepts } w\}$$
+
+
+\begin{enumerate}
+	\item $L \subseteq \Sigma^*$ is \textbf{recognizable (recursive enumerable)} by a Turing machine if there exists a Turing machine $M$ with $L(M) = L$. 
+	\item $L \subseteq \Sigma^*$ is \textbf{decidable (recursive)} if there is a Turing machine $M$ that accepts every $w \in L$ and rejects every $w \not \in L$.
+\end{enumerate}
+
+\begin{remark}
+We note that every decidable language is recognizable, but the converse is not true. If $w \not \in L$, where $L$ is recognized by a Turing machine, it may either reject or loop. A Turing machine that halts on all inputs is \textbf{total}.
+\end{remark}
+
+\begin{example}
+Determine whether $L = \{ 0^{2^n} | n \geq 0 \}$ is decidable.
+\end{example}
+
+We note that on input $w$, $M$ rejects $w$ if it is not of the form $0^+$. We then repeat the following steps:
+
+\begin{enumerate}
+	\item Accept if there is exactly one 0 is on the tape.
+	\item Reject if the number of 0's on the tape is odd and greater than 1.
+	\item Cross off every second 0 on the tape using a new symbol.
+\end{enumerate}
+
+Thus, if $w = 0^n$, the machine halts after $k$ iterations of the repeated steps, where $k$ is the largest value such that $2^k \leq n$.
+
+
+
+\subsection{The Church-Turing Thesis}
+
+\begin{definition}
+Let $\langle M\rangle$ denote the \textbf{encoding} of $M$ as a binary string.
+\end{definition}
+
+\begin{theorem}
+Every multi-tape Turing machine has an equivalent single-tape Turing machine.
+\end{theorem}
+
+
+
+\begin{proof}Suppose we have multiple tapes with independent read/write heads. Initially, we have input on the first tape. The transition function is $\delta : Q \times \Gamma^k \rightarrow Q \times \Gamma^k \times \{L,R\} $. Let $k = 2$, where $k$ indicates that a Turing machine $M$ has two tapes. We can encode the configuration of $M$ into a string $C$ of the form
+
+$$C = u_1qa_1v_1\#u_2qa_2v_2$$
+
+where $a_i$ denotes the symbol that the head is reading. 
+
+Now, we define a Turing machine $M'$, which operates on input $w$. First, we write the starting configuration of $C_0 = q_0w \#q_0\textvisiblespace$ of $M$ onto the tape of $M'$. We then repeat the following:
+
+\begin{enumerate}
+	\item Read the configuration $C$ of $M$ on the tape $M'$.
+	\item Accept if $C$ is an accepting configuration of $M$.
+	\item Reject if $C$ is a rejecting configuration of $M$.
+	\item Make a second pass to update the tape of $M'$ such that it becomes the next configuration of $M$.
+\end{enumerate}
+\end{proof}
+
+\begin{example}
+Let $M$ be a single tape Turing machine with $q$ states in the control and let $w$ be an input of length $m$ such that when processing $w$, the machine does not move its head left in the first $m+q+1$ steps. Prove that $M$ never moves its head left on input $w$.
+\end{example}
+
+We note that we need $m-1$ steps to traverse the initial input. For the next $q+2$ steps, the machine reads only blanks. By the pigeonhole principle, there is a state $q_i$ which $M$ enters at least twice after traversing the input. But this means that when $q_i$ encounters a blank, it deterministically reaches a new state $q_k$. But then this is a loop, so the head 
+
+\section{Final Questions}
+
+\begin{enumerate}
+	\item True and False questions.
+	\item Short answer with justification.
+	\item DFA/NFA.
+	\item CFG/TM.
+	\item Reduction.
+	\item Bonus.
+\end{enumerate}
+
+\section{June 22, 2016}
+\subsection{Universal Turing Machine}
+
+\begin{theorem}
+There exists a Turing machine $U$ such that on input $\langle M, w \rangle$ simulates the Turing machine $M$ on $w$.
+\end{theorem}
+
+\begin{proof}
+We may consider a multi-tape Turing machine where one tape is the input, while the other is the output. We construct a Turing machine $U_0$ with two tapes. On input $\langle M, w \rangle$, $U_0$ does the following:
+	\begin{enumerate}
+		\item Write the start configuration of $M$, $C_0 = q_0w$ as a binary string $\langle C_0 \rangle$ on the first tape. 
+		\item Write the description of $M$ as a binary string on the second tape. 
+		\item Locate on the first tape the state of $M$.
+		\item Locate on the first tape the symbol under the read/write head of $M$, which we denote $a$.
+		\item Look up on the second tape the part from the transition function that is required, $\delta(q,a)$. 
+		\item Accept or reject if the current state is an accepting or rejecting state for $M$.
+		\item Update the first tape with the current state of $M$.
+		\item Repeat steps 3 to 7 as necessary.
+	\end{enumerate}
+\end{proof}
+
+\begin{theorem}
+The Acceptance problem 
+$$Accept = \{ \langle M, w \rangle | M \text{ accepts on } w \} $$ is recognizable. 
+\end{theorem}
+
+\begin{proof}
+We utilize the universal Turing machine $U$ which accepts the input $\langle M, w \rangle$ if and only if $M$ accepts $w$. But then, $U$ is a recognizer for $Accept$.
+\end{proof}
+
+\begin{example}
+Find a single tape Turing machine capable of recognizing $L = \{ 0^n1^n | n \geq 0\}$ in O(n log n) steps.
+\end{example}
+
+We first ensure that $w$ is not of the form $0^k1^l$ for some integers $k$ and $l$. Until all characters are crossed out, we make sure that the parity of 0's is the same a the parity of 1's. We cross out every other 0 and every other 1. Repeat the last two steps until either the string is rejected, or every character is crossed out. We accept the string if there are no more characters. 
+
+\subsection{Diagonalization}
+
+\begin{definition}
+Two sets $A$ and $B$ have the same \textbf{cardinality} if there exists a bijective function $f: A \rightarrow B$.
+\end{definition}
+
+\begin{definition}
+A set is \textbf{countable} if it has the same cardinality as as the set of natural numbers $\mathbb N = \{0,1,2,3,...\}$.
+\end{definition}
+
+\begin{theorem}
+Every set $S$ has a cardinality less than that of their power set. 
+\end{theorem}
+
+\begin{proof}
+Suppose that $S$ is a countably infinite set. We use diagonalization to show that $P(S)$ is uncountably infinite. We list the elements of $S$ horizontally. Suppose to the contrary that $P(S)$ is countable. Then there is a way to list all possible subsets of $S$ as $X=(x_1, x_2, x_3...)$. We encode each subset as a binary string, with 1 meaning that the element is in the subset, and 0 meaning that the element is not in the subset. But then, we can construct a new subset of $S$ by flipping the values along the diagonal, call $x_n$. Since this is a subset of $P(S)$, then it should have been in the list. This is a contradiction from construction of this new subset since $x_n \in X$ and $x_n \not \in X$ so $P(S)$ is uncountable. 
+\end{proof}
+
+
+
+\subsection{Undecidability}
+
+\begin{theorem}
+Not every language is decidable.
+\end{theorem}
+
+
+\begin{proof}
+We want to show that there exists a language that is not decided by any Turing machine. Note that every turing machine may be represented as a binary string. But we know that languages are elements of the power set of all binary strings. Thus, there are languages that are not decided by any Turing machine.
+\end{proof}
+
+Let us define the following languages:
+
+\begin{align*}
+SelfAccept &= \{ \langle M \rangle | M \text{ accepts } \langle M \rangle \} \\
+SelfReject &= \{ \langle M \rangle | M \text{ rejects }\langle M \rangle \}\\
+SelfHalt &= \{\langle M \rangle | M \text{ halts on } \langle M \rangle \}
+\end{align*}
+
+\begin{theorem}
+$SelfAccept$ is undecidable.
+\end{theorem}
+
+\begin{proof}
+Suppose to the contrary that there exists a Turing machine $SA$ that decides $SelfAccept$. That is
+
+\begin{align*}
+SA \text{ accepts } \langle M \rangle &\iff M \text{ accepts } \langle M \rangle\\
+SA \text{ rejects } \langle M \rangle &\iff M \text{ does not accept } \langle M \rangle
+\end{align*}
+
+We let $SA^R$ be the Turing machine obtained from $SA$ by swapping its accept and reject states. That is, $SA^R$ rejects whenever $SA$ accepts and vice versa. Now we consider $SA^R$ to get
+
+\begin{align*}
+SA \text{ accepts } \langle SA^R\rangle &\iff SA^R \text{ accepts } \langle SA^R\rangle\\
+SA \text{ rejects } \langle SA^R \rangle &\iff SA^R \text{ does not accept } \langle SA^R \rangle
+\end{align*}
+
+But this is a contradiction due to the definition of $SA^R$. Thus, $SelfAccept$ is undecidable.
+\end{proof}
+
+\begin{theorem}
+  $SelfReject$ is undecidable.
+\end{theorem}
+
+
+\begin{proof}
+Suppose that there exists a Turing machine $SR$ that decides $SelfReject$. That is, for any Turing machine $M$ 
+
+$$SR  \text{ accepts } \langle M \rangle \iff M \text{ rejects } \langle M \rangle$$ In particular, we consider $SR$ to get that $$SR \text{ accepts } \langle SR \rangle \iff SR \text{ rejects }\langle SR \rangle$$
+This is a contradiction. Therefore, $SelfReject$ is undecidable. 
+\end{proof}
+\begin{theorem}
+ $SelfHalt$ is undecidable.
+\end{theorem}
+
+\begin{proof}
+Suppose there is a Turing machine $SH$ that decides $SelfHalt$. Then, for any Turing machine M
+
+\begin{align*}SH \text{ accepts } \langle M\rangle &\iff M \text{ halts on } \langle M \rangle\\
+SH \text { rejects } \langle M \rangle &\iff M \text{ does not halt on } \langle M \rangle
+\end{align*}
+We now construct a Turing machine $SH^X$ from $SH$ such that it redirects any transitions to accept to a new state that hangs, and redirects any transitions to reject to accept. Thus, we consider $SH^X$
+
+\begin{align*}
+SH \text{ accepts } \langle SH^X\rangle &\iff SH^X \text{ halts on } \langle SH^X\rangle\\
+SH \text { rejects } \langle SH^X \rangle &\iff SH^X \text{ does not halt on } \langle SH^X \rangle
+\end{align*}
+
+But this leads to a contradiction since $SH^X$ hangs if and only if $SH^X$ halts, so $SelfHalt$ is undecidable.
+\end{proof}
+
+\begin{theorem}
+The Halting problem is undecidable. 
+\end{theorem}
+
+\begin{proof}Suppose $H$ is a Turing machine that decides $Halt$ (the Halting language), where $Halt = \{ \langle M, w, \rangle | M \text{ halts on } w \}$. Then, we use $H$ to build a Turing machine $SH$ that decides $SelfHalt$. We note that on input $w$, $SH$ first checks if $w$ is a valid description of a Turing machine. It then duplicates $w$ on the tape and passes control to $H$. Thus, $SH$ decides $SelfHalt$. But since $SelfHalt$ is undecidable, so is $Halt$. 
+\end{proof} 
+
+\section{June 27, 2016}
+
+
+\subsection{Recognizable Languages}
+
+\begin{theorem}
+$SelfAccept$ is recognizable.
+\end{theorem}
+
+\begin{proof}
+We describe a Turing machine $SA$ which on input $w$, first checks that $w$ is the encoding of a Turing machine. If not, then $SA$ hangs (or rejects). $SA$ writes the string $ww$, which is the encoding for $\langle M,M\rangle$ and passes control to the universal Turing machine $U$. Thus, we get that 
+$$U \text{ accepts } \iff M \text{ accepts } \langle M \rangle$$
+Therefore, $SelfAccept$ is recognizable.
+\end{proof}
+
+\begin{theorem}
+A language $L$ is decidable if and only if both $L$ and $\overline{L}$ are recognizable.
+\end{theorem}
+
+\begin{proof}
+In the forward direction, we suppose that $L$ is decidable. But since $L$ is decidable, it is also recognizable. We can construct a Turing machine for $\overline{L}$ by swapping the accepting and rejecting states of the Turing machine of $L$.
+
+In the reverse direction, let $M_1$ be a recognizer for $L$ and $M_2$ be a recognizer for $\overline{L}$. We will build a Turing machine $M$ that decides $L$. On input $w$, $M$ does the following:
+
+\begin{enumerate}
+	\item Run both $M_1$ and $M_2$ on input $w$ in parallel.
+	\item If $M_1$ accepts, then $M$ accepts. If $M_2$ accepts, then $M$ rejects.
+\end{enumerate}  
+
+By running in parallel, this means that $M$ has two tapes, one for simulating each of $M_1$ or $M_2$. $M$ alternates simulation of one step of each machine until one of them accepts. 
+
+Alternatively, we can define $M$ such that on input $w$, it does the following:
+
+\begin{enumerate}
+	\item Set $k=0$.
+	\item Simulate $M_1$ for $k$ steps on $w$. Accept if $M_1$ accepts in $k$ steps.
+	\item Simulate $M_2$ for $k$ steps on $w$. Reject if $M_1$ accepts in $k$ steps.
+	\item Increment $k$ by 1.
+	\item Repeat Steps 2-4 as necessary.
+\end{enumerate}
+\end{proof}
+
+
+\begin{theorem}
+$\overline{Halt}$ is not recognizable, where $\overline{Halt} = \{ \langle M, w \rangle | M \text{ does not halt on } w \} $.
+\end{theorem}
+
+\begin{proof}
+We know that $Halt$ is recognizable, but not decidable. Thus, we apply the previous theorem to show that $\overline{Halt}$ is not recognizable. 
+\end{proof}
+
+
+
+
+\subsection{Reductions}
+
+\begin{definition}
+$f: \Sigma^* \rightarrow \Sigma^*$ is a \textbf{reduction} from language $A$ to language $B$ if 
+$$w \in A \iff f(w) \in B$$
+for all $w \in \Sigma^*$.
+\end{definition}
+
+\begin{definition}
+$f: \Sigma^* \rightarrow \Sigma^*$ is \textbf{computable} if there exists a Turing machine that for any $w\in \Sigma^*$, halts with $f(w)$ written on the tape. 
+\end{definition}
+
+
+
+\begin{remark}
+A language $A$ reduces to a language $B$, denoted as $ A \leq_m B$, if there is a computable reduction from $A$ to $B$.
+\end{remark}
+
+\begin{theorem}
+If $A \leq_m B$ and $A$ is undecidable, then so is $B$.
+\end{theorem}
+
+\begin{proof}
+Suppose that $B$ is decidable and let $f : \Sigma^* \rightarrow \Sigma^*$ such that $w \in A \iff f(w) \in B$ for every $w \in \Sigma^*$. Let $M_B$ be a Turing machine that decides $B$ and $M_f$ be a Turing machine that computes $f$. Then we can construct a Turing machine $M$ that decides $A$ on input $w$. We will define $M$ as follows:
+
+\begin{enumerate}
+	\item Simulate $M_f$ on $w$ to compute $f(w)$.
+	\item Simulate $M_B$ on $f(w)$. 
+	\item Accept if $M_B$ accepts and reject if $M_B$ rejects. 
+\end{enumerate}
+
+However, this contradicts the fact that $A$ is undecidable. Therefore, $B$ is also undecidable. 
+\end{proof}
+
+\begin{remark}
+To prove that a language $L$ is  undecidable, we reduce a known undecidable language to $L$. 
+\end{remark}
+
+\begin{theorem}
+The language $$Any = \{ \langle M \rangle | L(M) \text{ contains at least one string }\}$$
+is undecidable.
+\end{theorem}
+
+\begin{proof}
+Suppose that we can decide the language $Any$. We show that this implies that we can decide $Halt$. Given any input $\langle M, w \rangle$ to the Halting problem, we construct a machine $M' = f(\langle M, w \rangle)$ that on any input $y$ does the following:
+
+\begin{enumerate}
+	\item Erases the input $y$.
+	\item Writes $\langle M , w \rangle$ on its tape.
+	\item Runs $M$ on input $w$ (using the universal Turing machine).
+	\item Accepts if and only if $M$ halts on $w$. 
+\end{enumerate}
+
+Then $$L(M') = \begin{cases}
+	\Sigma^* \text{ if } $M$ \text{ halts on } w\\
+	\emptyset \text{ if } $M$ \text{ does not halt on } w
+\end{cases}$$
+
+If we can decide whether a machine accepts any string at all, we an apply this decision procedure to $M'$. Therefore, this would determine whether$M$ halts on $w$. That is, we would be able to decide $Halt$, which is a contradiction.
+\end{proof}
+
+\begin{theorem}
+The language
+$$Rev = \{ \langle M \rangle | M \text{ is a Turing machine that accepts } w^R \text{ whenever it accepts } w \} $$
+is undecidable.
+\end{theorem}
+
+\begin{proof}
+Suppose that we can decide the language $Rev$. We show that this implies we can decide $Halt$. Given any input $\langle M, w \rangle$ to the Halting problem, we construct a machine $M' = f(\langle M, w \rangle)$ that on any input $y$does the following:
+
+\begin{enumerate}
+	\item If $y=01$, we accept.
+	\item if $y \neq 10$, we reject.
+	\item if $y = 10$, simulate $M$ on $w$ and accept if $M$ halts. 
+\end{enumerate}
+
+Thus, if $M$ halts on $w$, then $L(M') = \{ 01, 10\}$, so $\langle M'\rangle \in Rev$. Conversely, if $\langle M, w \rangle \not \in Halt$, then $L(m') = \{01\}$, so $\langle M' \rangle \not \in Rev$. This shows that $f(\langle M,w\rangle) = \langle M'\rangle$ is a reduction from $Halt$ to $Rev$. Since $f$ is computable, we conclude that $Rev$ is necessarily undecidable. 
+\end{proof}
+
+\begin{theorem}The language 
+$$Reg = \{\langle M \rangle | M \text{ is a Turing machine and } L(M) \text{ is regular}\}$$ is undecidable.
+\end{theorem}
+
+\begin{proof}
+Suppose that we can decide the language $Reg$. .We show that this implies that we can decide $Halt$. Given any inout $\langle M, w \rangle $ to the Halting problem, we construct the machine $M' = f(\langle M, w \rangle )$ that on input $y$ does the following:
+
+\begin{enumerate}
+	\item if $y$ has the form $0^n1^n$, then accept.
+	\item if $y$ does not have this form, then we run $M$ on input $w$ and accept if $M$ halts. 
+\end{enumerate}
+
+If $M$ halts on $w$, then $L(M') = \Sigma^*$, which is a regular language, so $\langle M'\rangle \in Reg$. Conversely, if $\langle M, w \rangle \not \in Halt$, then $L(M') = \{0^n1^n| n \geq 0\}$, which is not regular so $\langle M' \rangle \not \in Reg$. This shows that $f(\langle M, w \rangle) = \langle M' \rangle$ is a reduction from $Halt$ to $Reg$. 
+\end{proof}
+
+
+\section{June 29, 2016}
+\subsection{Selected Problems}
+
+\begin{example}
+Prove that 
+$$SameC = \{\langle M_1, M_2\rangle | M_1, M_2 \text{ are Turing machines and } L(M_1) = \overline{L(M_2)}\}$$
+is undecidable.
+\end{example}
+
+We will reduce this to the Halting problem. Suppose to the contrary that we can decide $SameC$. Given any input $\langle M, w \rangle$ to the Halting problem, we construct an input to $SameC$ by making sure that $L(M_1) = \Sigma^*$ only if input $M$ halts on $w$, and makes $L(M_1) = \emptyset$ otherwise. We ensure that $L(M_2) = \emptyset$. But then, our Turing machine for $SameC$ decides the Halting problem, which is a contradiction.
+
+\begin{example}
+Prove that the language $$NonEmpty = \{ \langle M \rangle|M \text{ accepts some string}\}$$ is recognizable.
+\end{example}
+
+Suppose that $s_1, s_2, s_3,...$ is a list of all possible strings over the alphabet. We construct a machine $R$ such that for $i = 0, 1, 2, ...$ we run $M$ for $i$ steps on each input $s_1, s_2, ...,s_i$. We note that by this way of computation, we are able to traverse all strings over the alphabet. If any computation accepts, then $R$ accepts. 
+
+\begin{example}
+Let $$Fin = \{\langle M \rangle | L(M) \text{ is finite}\}$$
+Prove that $Fin$ and $\overline{Fin}$ are both not recognizable. 
+\end{example}
+
+Suppose to the contrary that $\overline{Fin}$ is recognizable by the Turing machine $F$. We will reduce $\overline{Halt}$ to $\overline{Fin}$. On any input $\langle M , w \rangle $ to $\overline{Halt}$, we will construct a Turing machine $M' = f(\langle M, w\rangle)$, where $M'$ on input $y$, first saves $y$ onto a second tape, then runs $M$ on $w$ for $|y|$ steps. If $M$ does not halt, $M'$ accepts, and rejects otherwise. We note that if $\langle M, w\rangle \in \overline{Halt}$, then $L(M') = \Sigma^*$. Otherwise, in the case that $M$ halts on $w$ in $n$ steps, $M'$ would accept if $|y| < n$. In this case, $L(M') = \{y \in \Sigma^* | |y|< n\}$. 
+
+If $\langle M, w \rangle \in \overline{Halt}$, then $M' \in \overline{Fin}$.
+If $\langle M, w \rangle \not \in \overline{Halt}$, then $M' \not \in \overline{Fin}$. Since we know that $\overline{Halt}$ is unrecognizable, then $\overline{Fin}$ is not recognizable.
+
+\begin{example}
+Let $L$ be a regular language. Let $$prefmax(L) = \{x\in L | xy \in L \iff y = \epsilon\}$$ Prove that $prefmax(L)$ is regular.
+\end{example}
+
+Since $L$ is a regular language, then there is a DFA for $L$. We construct a DFA for $prefmax(L)$ by simply removing all outgoing transitions from the accepting states of $L$ and removing all accepting states which have outgoing transitions which eventually lead to an accepting state. 
+
+\begin{example}
+Prove that $$L = \{\langle M_1, M_2, M_3\rangle | L(M_1) = L(M_2)L(M_3)\}$$ is unrecognizable.
+\end{example}
+
+Suppose to the contrary that $L$ is recognizable. We will show by reduction that $\overline{Halt}$ is recognizable, thus leading to a contradiction. Given any input $\langle M, w \rangle$ to $\overline{Halt}$, we can construct an input $\langle M_1, M_2, M_3\rangle$ to $L$. $M_3$ is set to be the empty set. $M$ is first run on input $w$. If $M$ halts, then we accept. That is, $L(M_1) = \Sigma^*$ and $L(M_3) = \emptyset$. In the case that it does not halt, then we have both $L(M_1) = L(M_3) = \emptyset$. 
+
+
+\end{document}
